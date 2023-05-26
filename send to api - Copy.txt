@@ -1,0 +1,84 @@
+import requests
+import openpyxl
+from bs4 import BeautifulSoup
+
+search_query = input('Enter the words to search: ')
+base_url = "https://www.amazon.in/s?k="
+url = base_url + search_query
+headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36'}
+cookies = {'cookie_name': 'cookie_value'} # Replace with your actual cookies
+
+search_response = requests.get(url, headers=headers, cookies=cookies)
+
+
+cookie={} # insert request cookies within{}
+def getAmazonSearch(search_query):
+    url="https://www.amazon.eg/s?k="+search_query
+    print(url)
+    page=requests.get(url,cookies=cookie,headers=header)
+    if page.status_code==200:
+        return page
+    else:
+        return "Error"
+def Searchasin(asin):
+    url="https://www.amazon.in/dp/"+asin
+    print(url)
+    page=requests.get(url,cookies=cookie,headers=header)
+    if page.status_code==200:
+        return page
+    else:
+        return "Error"
+def Searchreviews(review_link):
+    url="https://www.amazon.in"+review_link
+    print(url)
+    page=requests.get(url,cookies=cookie,headers=header)
+    if page.status_code==200:
+        return page
+    else:
+        return "Error"
+product_names=[]
+response=getAmazonSearch(search_query)
+soup=BeautifulSoup(response.content)
+for i in soup.findAll("span",{'class':'a-size-base-plus a-color-base a-text-normal'}): # the tag which is common for all the names of products
+    product_names.append(i.text) #adding the product names to the list
+
+# extract the price from the HTML content
+price_tags = soup.select('.a-price > .a-offscreen')
+prices = [tag.text for tag in price_tags]
+# extract the ratings from the HTML content
+rating_tags = soup.select('.a-section .a-icon-alt')
+ratings = [tag.text for tag in rating_tags]
+# extract the image URLs from the HTML content
+image_tags = soup.select('.s-image')
+image_urls = [tag['src'] for tag in image_tags]
+
+
+# Set the API endpoint URL
+api_url = "https://apex.oracle.com/pls/apex/club_bel/dsd/"
+
+for product_name, price, rating, image_url in zip(product_names, prices, ratings, image_urls):
+    
+    # Set the data you want to send
+    data = {
+    "product_name": product_name,
+    "price": price,
+    "rating": rating,
+    "image_url": image_url
+}
+
+    # Set the request headers
+    headers = {
+        "Content-Type": "application/json"
+    }
+
+    # Send the POST request
+    response = requests.post(api_url, json=data, headers=headers)
+    # Check the status code of the response
+    if response.status_code == 201:
+        print("Successfully sent data to the API")
+    else:
+        print("Error sending data to the API")
+enter the words to search€”«·« 
+https://www.amazon.eg/s?k=€”«·« 
+Successfully sent data to the API
+Successfully sent data to the API
