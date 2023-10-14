@@ -9,7 +9,9 @@
 📫 How to reach me:
 
 Email: elwmo2005@gmail.com
+
 LinkedIn: linkedin.com/in/mohamedelwan2020
+
 Phone: +201225057654
 
 <!---
